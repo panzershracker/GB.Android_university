@@ -17,17 +17,18 @@ public class Main {
      */
 
     static void guessTheNumber() {
+        Random random = new Random();
         Scanner scanner = new Scanner((System.in));
-        System.out.println("Сыграть еще раз? Да - 1, Нет - 2: \n");
-        int playAgain = scanner.nextInt();
+        int counter = 0;
+        int playAgain;
 
         do {
             System.out.println("Игра началась, у вас 3 попытки чтобы отгадать число в диапазоне 0-9: \n");
-            Random random = new Random();
-            int randNum = random.nextInt(3);
+            
+            do {
+                int randNum = random.nextInt(3);
 
-            for (int i = 0; i < 3; i++) {
-                System.out.println("Попытка № " + (i + 1) + ", введите число: \n");
+                System.out.println("Попытка № " + (counter + 1) + ", введите число: \n");
                 int answer = scanner.nextInt();
 
                 if (answer == randNum) {
@@ -35,11 +36,17 @@ public class Main {
                     break;
                 } else if (answer > randNum) {
                     System.out.println("Введенное число больше загаданного!");
+                    counter++;
                 } else {
                     System.out.println("Введенное число меньше загаданного!");
+                    counter++;
                 }
 
-            }
-        }while (playAgain == 1);
+            } while (counter < 3);
+
+            System.out.println("Сыграть еще раз? Да - 1, Нет - 2: \n");
+            playAgain = scanner.nextInt();
+
+        }while(playAgain == 1);
     }
 }
