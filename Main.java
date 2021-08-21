@@ -15,7 +15,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-	play();
+        createField();
+        play();
+
 
     }
     static void play() {
@@ -46,25 +48,72 @@ public class Main {
         } while (true);
     }
 
-    static boolean isOneTypeArray(char[] array) {
-        char firstSymbol = array[0];
-        do {
-            for (int i = 0; i < array.length; i++) {
-                }
-            }while (array[i] == firstSymbol);
+    static boolean isOneTypeArray(char[] array, char symbol) {
+        /*
+        Функция для проверки значений одномерного массива на одинаковость.
+        Логика:
+        За эталон берем первый элемент массива, и сравниваем с ним все последующие.
+        Первое не соответствие свидетельствует о том что элементы массива не одинаковые
+        и цикл прекращает работу, return false.
+
+        Если каждый последующий элемент идентичен эталонному - возвращаем true.
+         */
+
+        char firstSymbol = symbol;
+
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != firstSymbol) {
+                return false;
+            }
+        }
+        return true;
     }
 
     static boolean isWin(char[][] field, char symbol) {
-        //horizontal win check:
+        /*
+        Проверка на победу.
+        Для вертикали, горизонтали и диагоналей формируем одномерные массивы и передаем
+        в функцию проверки однородности массива (isOneTypeArray) которая возвращает ответ типа boolean.
+         */
+
+        // horizontal win check
         for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field.length; j++) {
-                if (field[i][j] != symbol) {
-                    break;
-                }continue;
+            if (isOneTypeArray(field[i], symbol)) {
+                return true;
             }
         }
+
+        //vertical win check
+        char[] tempArray = new char[field.length];
+
+        for (int i = 0; i < field.length; i++) {
+            if (isOneTypeArray(tempArray, symbol)) {
+                return true;
+            }
+            for (int j = 0; j < field.length; j++) {
+                tempArray[j] = field[j][i];
+            }
+        }
+
+        //diagonal win check
+        for (int i = 0; i < field.length; i++) {
+            tempArray[i] = field[i][i];
+        }
+        if (isOneTypeArray(tempArray, symbol)) {
+            return true;
+        }
+
+        //side diagonal win check
+        for (int i = 0; i < field.length; i++) {
+            tempArray[i] = field[i][field.length - 1 - i];
+        }
+        if (isOneTypeArray(tempArray, symbol)) {
+            return true;
+        }
+
         return false;
     }
+
 
     static boolean isDraw(char[][] field) {
         for (int i = 0; i < field.length; i++) {
@@ -77,39 +126,39 @@ public class Main {
         return true;
     }
 
-    static boolean isWin2(char[][] field, char symbol) {
-    // horizontal
-        if (field[0][0] == symbol && field[0][1] == symbol && field[0][2] == symbol) {
-        return true;
-    }
-        if (field[1][0] == symbol && field[1][1] == symbol && field[1][2] == symbol) {
-        return true;
-    }
-        if (field[2][0] == symbol && field[2][1] == symbol && field[2][2] == symbol) {
-        return true;
-    }
-
-    // vertical
-        if (field[0][0] == symbol && field[1][0] == symbol && field[2][0] == symbol) {
-        return true;
-    }
-        if (field[0][1] == symbol && field[1][1] == symbol && field[2][1] == symbol) {
-        return true;
-    }
-        if (field[0][2] == symbol && field[1][2] == symbol && field[2][2] == symbol) {
-        return true;
-    }
-
-    // diagonals
-        if (field[0][0] == symbol && field[1][1] == symbol && field[2][2] == symbol) {
-        return true;
-    }
-        if (field[0][2] == symbol && field[1][1] == symbol && field[2][0] == symbol) {
-        return true;
-    }
-
-        return false;
-}
+//    static boolean isWin2(char[][] field, char symbol) {
+//    // horizontal
+//        if (field[0][0] == symbol && field[0][1] == symbol && field[0][2] == symbol) {
+//        return true;
+//    }
+//        if (field[1][0] == symbol && field[1][1] == symbol && field[1][2] == symbol) {
+//        return true;
+//    }
+//        if (field[2][0] == symbol && field[2][1] == symbol && field[2][2] == symbol) {
+//        return true;
+//    }
+//
+//    // vertical
+//        if (field[0][0] == symbol && field[1][0] == symbol && field[2][0] == symbol) {
+//        return true;
+//    }
+//        if (field[0][1] == symbol && field[1][1] == symbol && field[2][1] == symbol) {
+//        return true;
+//    }
+//        if (field[0][2] == symbol && field[1][2] == symbol && field[2][2] == symbol) {
+//        return true;
+//    }
+//
+//    // diagonals
+//        if (field[0][0] == symbol && field[1][1] == symbol && field[2][2] == symbol) {
+//        return true;
+//    }
+//        if (field[0][2] == symbol && field[1][1] == symbol && field[2][0] == symbol) {
+//        return true;
+//    }
+//
+//        return false;
+//}
 
     static void drawField(char[][] field) {
         for (int i = 0; i < field.length; i++) {
@@ -147,7 +196,6 @@ public class Main {
         System.out.print("Ход соперника: \n");
         System.out.println(" ");
     }
-
 
     static boolean isFreeCell (char[][] field, int h, int v) {
         return field[h][v] == '-';
