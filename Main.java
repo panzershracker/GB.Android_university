@@ -12,19 +12,25 @@ import java.util.Scanner;
 Очень желательно не делать это просто набором условий для каждой из возможных ситуаций;
 4.*** Доработать искусственный интеллект, чтобы он мог блокировать ходы игрока.
  */
+
+// На данный момент игра универсальна для всех размеров поля.
+// Осталось добавить выигрыш вида '4 in row' и блокировки ИИ.
+
 public class Main {
 
     public static void main(String[] args) {
-        createField();
-        play();
+        int fieldSize = 3;
+        createField(fieldSize);
+        play(fieldSize);
 
 
     }
-    static void play() {
-        char[][] field = createField();
+
+    static void play(int fieldSize) {
+        char[][] field = createField(fieldSize);
 
         do {
-            playerTurn(field);
+            playerTurn(field, fieldSize);
             drawField(field);
             if (isWin(field, 'X')) {
                 System.out.println("Congrats!!! You are winner :)");
@@ -114,7 +120,6 @@ public class Main {
         return false;
     }
 
-
     static boolean isDraw(char[][] field) {
         for (int i = 0; i < field.length; i++) {
             for (int j = 0; j < field.length; j++) {
@@ -126,56 +131,12 @@ public class Main {
         return true;
     }
 
-//    static boolean isWin2(char[][] field, char symbol) {
-//    // horizontal
-//        if (field[0][0] == symbol && field[0][1] == symbol && field[0][2] == symbol) {
-//        return true;
-//    }
-//        if (field[1][0] == symbol && field[1][1] == symbol && field[1][2] == symbol) {
-//        return true;
-//    }
-//        if (field[2][0] == symbol && field[2][1] == symbol && field[2][2] == symbol) {
-//        return true;
-//    }
-//
-//    // vertical
-//        if (field[0][0] == symbol && field[1][0] == symbol && field[2][0] == symbol) {
-//        return true;
-//    }
-//        if (field[0][1] == symbol && field[1][1] == symbol && field[2][1] == symbol) {
-//        return true;
-//    }
-//        if (field[0][2] == symbol && field[1][2] == symbol && field[2][2] == symbol) {
-//        return true;
-//    }
-//
-//    // diagonals
-//        if (field[0][0] == symbol && field[1][1] == symbol && field[2][2] == symbol) {
-//        return true;
-//    }
-//        if (field[0][2] == symbol && field[1][1] == symbol && field[2][0] == symbol) {
-//        return true;
-//    }
-//
-//        return false;
-//}
-
-    static void drawField(char[][] field) {
-        for (int i = 0; i < field.length; i++) {
-            for (int j = 0; j < field.length; j++) {
-                System.out.print(field[i][j]);
-                System.out.print(" ");
-            }
-        System.out.println("\n");
-        }
-    }
-
-    static void playerTurn (char[][] field) {
+    static void playerTurn (char[][] field, int fieldSize) {
         int h, v;
 
         do{
-            h = getCoord(field.length - 1, 'h');
-            v = getCoord(field.length - 1, 'v');
+            h = getCoord(field.length - 1, 'h', fieldSize);
+            v = getCoord(field.length - 1, 'v', fieldSize);
         }while (isNotFreeCell(field, h, v));
 
         field[h][v] = 'X';
@@ -205,24 +166,36 @@ public class Main {
         return !isFreeCell(field, h, v);
     }
 
-    static int getCoord(int lastIndex, char coordName) {
+    static int getCoord(int lastIndex, char coordName, int fieldSize) {
         Scanner scanner = new Scanner(System.in);
         int coord;
 
         do {
-            System.out.printf("Введите %s-координату [1-3]%n", coordName);
+            System.out.printf("Введите %s-координату [1-%s]%n", coordName, fieldSize);
             coord = scanner.nextInt() - 1;
         } while (coord < 0 || coord > lastIndex);
         return coord;
     }
 
+    static char[][] createField(int size) {
+        char[][] field = new char[size][size];
 
-    static char[][] createField() {
-        return new char[][]{
-                {'-', '-', '-',},
-                {'-', '-', '-',},
-                {'-', '-', '-',}};
-
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                field[i][j] = '-';
+            }
         }
+        return field;
+    }
+
+    static void drawField(char[][] field) {
+        for (int i = 0; i < field.length; i++) {
+            for (int j = 0; j < field.length; j++) {
+                System.out.print(field[i][j]);
+                System.out.print(" ");
+            }
+            System.out.println("\n");
+        }
+    }
 }
 
