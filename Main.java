@@ -110,7 +110,7 @@ public class Main {
         int col = -1;
 
 
-        // horizontal win check
+        // horizontal cell to block check
         for (int i = 0; i < field.length; i++) {
             if (isNeedToBlock(field[i])) {
                 row = i;
@@ -118,7 +118,7 @@ public class Main {
             }
         }
 
-        //vertical win check
+        //vertical cell to block check
         char[] tempArray = new char[field.length];
 
         for (int i = 0; i < field.length; i++) {
@@ -133,7 +133,7 @@ public class Main {
             }
         }
 
-        //diagonal win check
+        //diagonal cell to block check
         for (int i = 0; i < field.length; i++) {
             tempArray[i] = field[i][i];
         }
@@ -143,7 +143,7 @@ public class Main {
             col = indexToBlock(tempArray);
         }
 
-        //side diagonal win check
+        //side diagonal cell to block check
         for (int i = 0; i < field.length; i++) {
             tempArray[i] = field[i][field.length - 1 - i];
         }
