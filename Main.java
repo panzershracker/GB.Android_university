@@ -13,8 +13,9 @@ import java.util.Scanner;
 4.*** Доработать искусственный интеллект, чтобы он мог блокировать ходы игрока.
  */
 
-// На данный момент игра универсальна для всех размеров поля.
-// Осталось добавить выигрыш вида '4 in row' и блокировки ИИ.
+// На данный момент игра универсальна для всех размеров поля (параметр fieldSize).
+// бот блокирует ряд игрока, если до выигрыша игроку не хватает одного крестика.
+// Добавлено сообщение о том какую ячейку заблокировал бот.
 
 public class Main {
 
@@ -73,6 +74,96 @@ public class Main {
             }
         }
         return true;
+    }
+
+    static boolean isNeedToBlock (char[] array) {
+        /*
+        Блокировка осуществляется только если игроку не хватает в ряду одного крестика для победы.
+        По сути повторяем логику работы функции проверки на однородность массива,
+        но теперь будем проверять массив на однородность и если в ряду все крестики кроме одного элемента "-".
+        Если игрок поставил крестик во всем ряду кроме одной клетки - этот ряд блокируем ноликом.
+         */
+
+        int emptyCell = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != 'X' && array[i] != '-') {
+                return false;
+            }else if (array[i] == '-') {
+                emptyCell = emptyCell + 1;
+            }
+        }
+
+        if (emptyCell == 1) {
+            return true;
+        }return false;
+    }
+
+    static int[] findCellToBlock (char[][] field) {
+        /*
+        Ищем строки, колонки и диагонали для блокировки.
+        Принимает одномерный массив.
+        Возвращает одномерный массив с заблокированной ячейкой.
+         */
+
+        int row = -1;
+        int col = -1;
+
+
+        // horizontal win check
+        for (int i = 0; i < field.length; i++) {
+            if (isNeedToBlock(field[i])) {
+                row = i;
+                col = indexToBlock(field[i]);
+            }
+        }
+
+        //vertical win check
+        char[] tempArray = new char[field.length];
+
+        for (int i = 0; i < field.length; i++) {
+
+            for (int j = 0; j < field.length; j++) {
+                tempArray[j] = field[j][i];
+            }
+
+            if (isNeedToBlock(tempArray)) {
+                col = i;
+                row = indexToBlock(tempArray);
+            }
+        }
+
+        //diagonal win check
+        for (int i = 0; i < field.length; i++) {
+            tempArray[i] = field[i][i];
+        }
+
+        if (isNeedToBlock(tempArray)) {
+            row = indexToBlock(tempArray);
+            col = indexToBlock(tempArray);
+        }
+
+        //side diagonal win check
+        for (int i = 0; i < field.length; i++) {
+            tempArray[i] = field[i][field.length - 1 - i];
+        }
+
+        if (isNeedToBlock(tempArray)) {
+            row = indexToBlock(tempArray);
+            col = field.length - indexToBlock(tempArray) - 1;
+        }
+        return new int[] {row,col};
+    }
+
+    static int indexToBlock (char[] array) {
+        int idx = 0;
+
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == '-') {
+                idx = i;
+            }
+        }
+        return idx;
     }
 
     static boolean isWin(char[][] field, char symbol) {
@@ -144,18 +235,36 @@ public class Main {
         System.out.println(" ");
     }
 
-    static void aiTurn (char[][] field) {
+    static void randomAimove (char[][] field) {
         Random random = new Random();
-        int h,v;
+        int h, v;
 
         do {
             h = random.nextInt(field.length);
             v = random.nextInt(field.length);
-        }while (isNotFreeCell(field, h, v));
+        } while (isNotFreeCell(field, h, v));
 
         field[h][v] = 'O';
         System.out.print("Ход соперника: \n");
         System.out.println(" ");
+    }
+
+    static void blockAiMove (char[][] field) {
+        int h = findCellToBlock(field)[0];
+        int v = findCellToBlock(field)[1];
+
+        field[h][v] = 'O';
+        System.out.printf("ИИ заблокировал ячейку [%s,%s]: \n", h + 1, v + 1);
+        System.out.println(" ");
+    }
+
+    static void aiTurn (char[][] field) {
+        int h,v;
+
+        if (findCellToBlock(field)[0] != -1 && findCellToBlock(field)[1] != -1) {
+            blockAiMove(field);
+    }   randomAimove(field);
+
     }
 
     static boolean isFreeCell (char[][] field, int h, int v) {
