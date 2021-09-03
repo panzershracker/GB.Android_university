@@ -23,14 +23,14 @@ public class Cat {
     public void eat (Plate plate) {
         if (appetite > plate.getFoodQuantity()) {
             System.out.println("В тарелке меньше еды чем нужно " + name + "у и он НЕ поел!\n");
-        }else {plate.decreaseFood(appetite);
+        }else {plate.decreaseFood(appetite, name);
                 bellyful = true;
                 System.out.println(name + " Поел\n");};
     }
 
     public void status() {
         System.out.printf("Статус:%n" +
-                "Имя = %s%n " +
+                "Имя = %s%n" +
                 "Аппетит = %s%n" +
                 "Сытый = %s%n%n", name, appetite, bellyful);
     }

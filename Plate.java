@@ -11,8 +11,10 @@ public class Plate {
         return foodQuantity;
     }
 
-    public void decreaseFood(int n) {
-        foodQuantity -= n;
+    public void decreaseFood(int n, String name) {
+        if (foodQuantity >= n) {
+            foodQuantity -= n;
+        }
     }
 
     public void info() {
