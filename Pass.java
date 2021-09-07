@@ -8,4 +8,6 @@ public interface Pass {
 
     int getRunDistance();
     int getJumpHeight();
+
+    String getName();
 }

@@ -15,10 +15,17 @@ package les_8;
 public class Main {
 
     public static void main(String[] args) {
-        Pass[] subjects = {new Cat("Tom")};
+        Pass[] subjects = {new Cat(), new Bot(), new Human()};
+
+        int wallHeight = 1;
+        int treadmillDistance = 10;
 
         for (int i = 0; i < subjects.length; i++) {
-            subjects[i].passTreadmill(subjects[i].getRunDistance());
+            if (subjects[i].getRunDistance() >= treadmillDistance) {
+                System.out.printf("%s pass treadmill %n", subjects[i].getName());
+            }else {
+                System.out.printf("%s Didn't pass treadmill %n", subjects[i].getName());
+            }
         }
     }
 }

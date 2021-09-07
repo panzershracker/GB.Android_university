@@ -1,7 +1,7 @@
 package les_8;
 
-public class Cat implements Pass{
-    private int runDistance = 8;
+public class Bot implements Pass{
+    private int runDistance = 15;
     private int jumpHeight = 3;
 
     public void passTreadmill(int runDistance) {

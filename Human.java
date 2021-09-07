@@ -1,8 +1,8 @@
 package les_8;
 
-public class Cat implements Pass{
-    private int runDistance = 8;
-    private int jumpHeight = 3;
+public class Human implements Pass{
+    private int runDistance = 12;
+    private int jumpHeight = 1;
 
     public void passTreadmill(int runDistance) {
     }
