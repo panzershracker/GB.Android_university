@@ -39,7 +39,13 @@ public class Main {
             mostCommon.put(unique2[i], 0);
         }
 
-        
-//        System.out.println(mostCommon);
+        for (int i = 0; i < arr.length; i++) {
+            mostCommon.put(arr[i], mostCommon.get(arr[i]) + 1);
+        }
+
+        System.out.printf("Elements quantity is: %s %n", mostCommon);
     }
 }
+
+//Unique elements list: [два, один, три]
+//Elements quantity is: {три=6, один=3, два=3}
