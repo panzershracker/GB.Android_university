@@ -23,15 +23,15 @@ public class Main {
     public static void main(String[] args) {
 
         String[] arr = {
-                    "один", "два", "три", "три",
-                    "один", "два", "три", "три",
-                    "один", "два", "три", "три"};
+                "один", "два", "три", "три",
+                "один", "два", "три", "три",
+                "один", "два", "три", "три"};
 
-//        ArrayList<String> arrList = new ArrayList<>(Arrays.asList(arr));
 
         Set<String> unique = new HashSet<String>(List.of(arr));
         String[] unique2 = unique.toArray(new String[unique.size()]);
         System.out.printf("Unique elements list: %s %n", unique);
+
 
         Dictionary<String, Integer> mostCommon = new Hashtable<>();
 
@@ -43,9 +43,31 @@ public class Main {
             mostCommon.put(arr[i], mostCommon.get(arr[i]) + 1);
         }
 
-        System.out.printf("Elements quantity is: %s %n", mostCommon);
+        System.out.printf("Elements quantity is: %s %n%n%n", mostCommon);
+
+
+        PhoneBook phoneBook = new PhoneBook();
+
+        phoneBook.add("Ivan", 123, false);
+        phoneBook.add("Ivan", 648, false);
+        phoneBook.add("Pavel", 157, false);
+        phoneBook.add("Sergey", 878, false);
+        phoneBook.add("Sergey", 547, false);
+        phoneBook.add("Maria", 101, false);
+        phoneBook.add("Sara", 555, false);
+
+
+
+        phoneBook.get("Sergey");
+//        phoneBook.printBook();
     }
 }
 
-//Unique elements list: [два, один, три]
-//Elements quantity is: {три=6, один=3, два=3}
+/*
+Unique elements list: [два, один, три]
+Elements quantity is: {три=6, один=3, два=3}
+
+
+Name = Sergey, phone number = 547
+Name = Sergey, phone number = 878
+ */
